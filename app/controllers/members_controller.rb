@@ -1,39 +1,41 @@
 class MembersController < ApplicationController
   def dashboard
-    @member = Member.find(params[:id])
-    @levels = @member.continuous_glucose_levels
+    @member = Member.find_by(id: params[:id])
+    if @member 
+      @levels = @member.continuous_glucose_levels
 
-    # Now calculate metrics (you can extract these into a service later)
+      # Now calculate metrics (you can extract these into a service later)
 
-    @avg_glucose = {
-      week: average_glucose(6.days.ago.beginning_of_day, Time.current.end_of_day),
-      month: average_glucose(Time.current.beginning_of_month, Time.current.end_of_month)
-    }
+      @avg_glucose = {
+        week: average_glucose(6.days.ago.beginning_of_day, Time.current.end_of_day),
+        month: average_glucose(Time.current.beginning_of_month, Time.current.end_of_month)
+      }
 
-    @prior_avg_glucose = {
-      week: average_glucose(13.days.ago.beginning_of_day, 7.days.ago.end_of_day),
-      month: average_glucose(Time.current.last_month.beginning_of_month, Time.current.last_month.end_of_month)
-    }
+      @prior_avg_glucose = {
+        week: average_glucose(13.days.ago.beginning_of_day, 7.days.ago.end_of_day),
+        month: average_glucose(Time.current.last_month.beginning_of_month, Time.current.last_month.end_of_month)
+      }
 
-    @time_above_range = {
-      week: time_above_range(6.days.ago.beginning_of_day, Time.current.end_of_day),
-      month: time_above_range(Time.current.beginning_of_month, Time.current.end_of_month)
-    }
+      @time_above_range = {
+        week: time_above_range(6.days.ago.beginning_of_day, Time.current.end_of_day),
+        month: time_above_range(Time.current.beginning_of_month, Time.current.end_of_month)
+      }
 
-    @prior_time_above_range = {
-      week: time_above_range(13.days.ago.beginning_of_day, 7.days.ago.end_of_day),
-      month: time_above_range(Time.current.last_month.beginning_of_month, Time.current.last_month.end_of_month)
-    }
+      @prior_time_above_range = {
+        week: time_above_range(13.days.ago.beginning_of_day, 7.days.ago.end_of_day),
+        month: time_above_range(Time.current.last_month.beginning_of_month, Time.current.last_month.end_of_month)
+      }
 
-    @time_below_range = {
-      week: time_below_range(6.days.ago.beginning_of_day, Time.current.end_of_day),
-      month: time_below_range(Time.current.beginning_of_month, Time.current.end_of_month)
-    }
+      @time_below_range = {
+        week: time_below_range(6.days.ago.beginning_of_day, Time.current.end_of_day),
+        month: time_below_range(Time.current.beginning_of_month, Time.current.end_of_month)
+      }
 
-    @prior_time_below_range = {
-      week: time_below_range(13.days.ago.beginning_of_day, 7.days.ago.end_of_day),
-      month: time_below_range(Time.current.last_month.beginning_of_month, Time.current.last_month.end_of_month)
-    }
+      @prior_time_below_range = {
+        week: time_below_range(13.days.ago.beginning_of_day, 7.days.ago.end_of_day),
+        month: time_below_range(Time.current.last_month.beginning_of_month, Time.current.last_month.end_of_month)
+      }
+    end
   end
 
   private
