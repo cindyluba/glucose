@@ -1,0 +1,56 @@
+<h1>Glucose Metrics Dashboard for <%= @member.first_name.capitalize %> <%= @member.last_name.capitalize %></h1>
+
+<div class="dashboard-metrics">
+  <% metrics = {
+    "Average Glucose" => { unit: "mg/dL", current: @avg_glucose, prior: @prior_avg_glucose },
+    "Time Above Range" => { unit: "%", current: @time_above_range, prior: @prior_time_above_range },
+    "Time Below Range" => { unit: "%", current: @time_below_range, prior: @prior_time_below_range }
+  } %>
+
+  <% ["Last 7 Days", "This Month"].each do |time_frame| %>
+    <div class="time-frame">
+      <h2><%= time_frame %></h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>Value</th>
+            <th>Change from Previous</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% metrics.each do |label, data| %>
+            <% current = time_frame == "Last 7 Days" ? data[:current][:week] : data[:current][:month] %>
+            <% prior = time_frame == "Last 7 Days" ? data[:prior][:week] : data[:prior][:month] %>
+            <% change = current && prior ? current - prior : nil %>
+            <tr>
+              <td><%= label %></td>
+              <td><%= current.nil? ? 'N/A' : "#{current.round(1)}#{data[:unit]}" %></td>
+              <td><%= format_change(change, data[:unit]) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+</div>
+
+<style>
+  .dashboard-metrics {
+    max-width: 800px;
+    margin: auto;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+  }
+  th, td {
+    border: 1px solid #ccc;
+    padding: 0.75rem;
+    text-align: left;
+  }
+  .text-green { color: green; }
+  .text-red { color: red; }
+  .text-muted { color: gray; }
+</style>
