@@ -29,3 +29,7 @@ If given more time, I would:
 - Build support for **multiple members**, including navigation UI.
 - Metrics are recalculated every tiem the dashboard is loaded. I'd look into **caching metircs** temporarily so that repeated visits to the dashboard don't repeat the same work.
 - Reduce data filtering in Ruby: Because each glucose reading has its own time zone offset, filtering is currently done in Ruby after loading all records. I’d explore ways to reduce data filtering in Ruby to limit the amount of data pulled from the database first, before applying local time filtering.
+
+## AI prompt summaries
+
+- https://chatgpt.com/share/67edd5bd-3dc0-8001-99d7-1b0a585f9e44
